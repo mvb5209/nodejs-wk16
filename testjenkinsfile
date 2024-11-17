@@ -12,10 +12,10 @@ pipeline{
             }
         }
         stage('packaging'){
-            agent { docker { image 'node:14'
-            args '-u root:root'}}
+            // agent { docker { image 'node:14'
+            // args '-u root:root'}}
             steps{
-                // sh 'rm -rf *.tgz || echo ""'
+                sh 'rm -rf *.tgz || echo ""'
                 sh 'npm pack'
             }
         }
