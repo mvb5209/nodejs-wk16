@@ -35,7 +35,9 @@ pipeline {
 
     stages {
         stage('Dependency install') {
-            agent { docker { image 'node:14' args '-u root:root' } }
+            agent { docker { 
+                image 'node:14' 
+                args '-u root:root' } }
             steps {
                 // Install dependencies
                 sh 'npm install'
@@ -43,7 +45,9 @@ pipeline {
         }
 
         stage('Packaging') {
-            agent { docker { image 'node:14' args '-u root:root' } }
+            agent { docker { 
+                image 'node:14' 
+                args '-u root:root' } }
             steps {
                 // Clean any existing .tgz files
                 sh 'rm -rf *.tgz || echo "No previous tgz file found"'
