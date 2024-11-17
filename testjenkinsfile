@@ -29,7 +29,7 @@ pipeline{
                 //  ${tgzFile} \
                 //  "http://ec2-3-87-36-92.compute-1.amazonaws.com:8081/artifactory/utc-nodejs/utc-app-${BUILD_ID}.tgz"'
 
-                sh """
+                sh ""
                     tgzFile=\$(ls *.tgz)
                     curl -u admin:AP8gcgmmset5jeYChTJYDN6XmDd -T \${tgzFile} \
                     "http://ec2-3-87-36-92.compute-1.amazonaws.com:8081/artifactory/utc-nodejs/utc-app-\${BUILD_ID}.tgz"
