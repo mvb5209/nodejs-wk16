@@ -4,17 +4,13 @@ pipeline{
 
     stages{
         stage('Dependency install'){
-            // agent { docker { image 'node:14'
-            // args '-u root:root'}}
             steps{
-                // sh 'npm cache clean  --force'
-                // sh ' sudo chown -R 995:993 "/.npm"'
+              
+              
                 sh 'npm install'
             }
         }
         stage('packaging'){
-            // agent { docker { image 'node:14'
-            // args '-u root:root'}}
             steps{
                 sh 'rm -rf *.tgz || echo ""'
                 sh 'npm pack'
