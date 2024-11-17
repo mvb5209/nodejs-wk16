@@ -5,8 +5,7 @@ pipeline{
         stage('Dependency install'){
             agent {docker {image 'nodejs'}}
             steps{
-                sh 'apt-get update'
-                sh 'apt-get install sudo -y'
+            
                 sh ' sudo chown -R 995:993 "/.npm"'
                 sh 'npm install'
             }
