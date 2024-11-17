@@ -1,31 +1,62 @@
-// pipeline{
-//     agent agent { docker { image 'node:14'
-//                 args '-u root:root'}}
+// // pipeline{
+// //     agent agent { docker { image 'node:14'
+// //                 args '-u root:root'}}
 
-//     stages{
-//       stage('Dependency install'){
-//         steps{
+// //     stages{
+// //       stage('Dependency install'){
+// //         steps{
               
               
+// //                 sh 'npm install'
+// //         }
+// //       }
+// //       stage('packaging'){
+// //         steps{
+// //             sh 'rm -rf *.tgz || echo ""'
+// //             sh 'npm pack'
+// //         }
+// //       }
+// //       stage('upload artifact'){
+// //         steps{
+// //            sh 'curl -uadmin:AP8gcgmmset5jeYChTJYDN6XmDd -T \
+// //            *.tgz \
+// //            "http://ec2-3-87-36-92.compute-1.amazonaws.com:8081/artifactory/utc-nodejs/utc-app-${BUILD_ID}.tgz" '
+// //             }
+// //         }
+// //     }
+// // }
+
+// pipeline {
+//     agent {
+//         docker { 
+//             image 'node:14'
+//             args '-u root:root'
+//         }
+//     }
+
+//     stages {
+//         stage('Dependency install') {
+//             steps {
 //                 sh 'npm install'
+//             }
 //         }
-//       }
-//       stage('packaging'){
-//         steps{
-//             sh 'rm -rf *.tgz || echo ""'
-//             sh 'npm pack'
+        
+//         stage('packaging') {
+//             steps {
+//                 sh 'rm -rf *.tgz || echo ""'
+//                 sh 'npm pack'
+//             }
 //         }
-//       }
-//       stage('upload artifact'){
-//         steps{
-//            sh 'curl -uadmin:AP8gcgmmset5jeYChTJYDN6XmDd -T \
-//            *.tgz \
-//            "http://ec2-3-87-36-92.compute-1.amazonaws.com:8081/artifactory/utc-nodejs/utc-app-${BUILD_ID}.tgz" '
+
+//         stage('upload artifact') {
+//             steps {
+//                 sh '''curl -u${ARTIFACTORY_USER}:${ARTIFACTORY_PASS} -T \
+//                 *.tgz \
+//                 "http://ec2-3-87-36-92.compute-1.amazonaws.com:8081/artifactory/utc-nodejs/utc-app-${BUILD_ID}.tgz"'''
 //             }
 //         }
 //     }
 // }
-
 pipeline {
     agent {
         docker { 
@@ -40,7 +71,7 @@ pipeline {
                 sh 'npm install'
             }
         }
-        
+
         stage('packaging') {
             steps {
                 sh 'rm -rf *.tgz || echo ""'
@@ -48,22 +79,14 @@ pipeline {
             }
         }
 
-    //     stage('upload artifact') {
-    //         steps {
-    //             sh '''curl -u${ARTIFACTORY_USER}:${ARTIFACTORY_PASS} -T \
-    //             *.tgz \
-    //             "http://ec2-3-87-36-92.compute-1.amazonaws.com:8081/artifactory/utc-nodejs/utc-app-${BUILD_ID}.tgz"'''
-    //         }
-    //     }
-    // }
-    stage('upload artifact') {
-    steps {
-        withCredentials([usernamePassword(credentialsId: 'artifactory-credentials', usernameVariable: 'ARTIFACTORY_USER', passwordVariable: 'ARTIFACTORY_PASS')]) {
-            sh """curl -u${ARTIFACTORY_USER}:${ARTIFACTORY_PASS} -T \
-            utc-app-1.2.0.tgz \
-            "http://ec2-3-87-36-92.compute-1.amazonaws.com:8081/artifactory/utc-nodejs/utc-app-${BUILD_ID}.tgz" """
+        stage('upload artifact') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'artifactory-credentials', usernameVariable: 'ARTIFACTORY_USER', passwordVariable: 'ARTIFACTORY_PASS')]) {
+                    sh """curl -u${ARTIFACTORY_USER}:${ARTIFACTORY_PASS} -T \
+                    utc-app-1.2.0.tgz \
+                    "http://ec2-3-87-36-92.compute-1.amazonaws.com:8081/artifactory/utc-nodejs/utc-app-${BUILD_ID}.tgz" """
+                }
+            }
         }
     }
-}
-
 }
