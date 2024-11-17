@@ -3,8 +3,8 @@ pipeline{
 
     stages{
         stage('Dependency install'){
-            agent {docker {image 'nodejs'
-            args '-u root:sudo'}}
+            agent {docker {image 'node:14'
+            args '-u root:root'}}
             steps{
                 sh 'npm cache clean  --force'
                 sh ' sudo chown -R 995:993 "/.npm"'
