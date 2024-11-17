@@ -11,5 +11,12 @@ pipeline{
                 sh 'npm install'
             }
         }
+        stage('packaging'){
+            agent { docker { image 'node:14'
+            args '-u root:root'}}
+            steps{
+                sh 'npm pack'
+            }
+        }
     }
 }
