@@ -53,8 +53,8 @@ pipeline {
             }
         }
 
-        stage('Upload Artifact') {
-            steps {
+        stage('Upload Artifact'){
+            steps{
                 // Upload the .tgz file
                 sh """
                     tgzFile=\$(ls *.tgz)
