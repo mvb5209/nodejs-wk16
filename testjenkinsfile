@@ -11,14 +11,22 @@ pipeline{
                 sh 'npm install'
             }
         }
-        stage('packaging'){
-            agent { docker { image 'node:14'
-            args '-u root:root'}}
-            steps{
-                sh 'rm -rf *.tgz || echo ""'
-                sh 'npm pack'
-            }
-        }
+        // stage('packaging'){
+        //     agent { docker { image 'node:14'
+        //     args '-u root:root'}}
+        //     steps{
+        //         sh 'rm -rf *.tgz || echo ""'
+        //         sh 'npm pack'
+        //     }
+        // }
+        stage('packaging') {
+    steps {
+        sh 'rm -rf my-app-1.2.0.tgz || echo ""'
+        sh 'npm pack'
+        sh 'ls -l *.tgz'  // Add this line to confirm the .tgz file is generated
+    }
+}
+
         stage('upload artifact'){
             steps{
                 sh 'curl -uadmin:AP8gcgmmset5jeYChTJYDN6XmDd -T \
