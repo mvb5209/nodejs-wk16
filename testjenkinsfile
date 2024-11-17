@@ -1,71 +1,32 @@
-// pipeline{
-//     agent any
-
-//     stages{
-//         stage('Dependency install'){
-//             agent { docker { image 'node:14'
-//             args '-u root:root'}}
-//             steps{
-//                 // sh 'npm cache clean  --force'
-//                 // sh ' sudo chown -R 995:993 "/.npm"'
-//                 sh 'npm install'
-//             }
-//         }
-//         stage('packaging'){
-//             agent { docker { image 'node:14'
-//             args '-u root:root'}}
-//             steps{
-//                 sh 'rm -rf *.tgz || echo ""'
-//                 sh 'npm pack'
-//             }
-//         }
-//         stage('upload artifact'){
-//             steps{
-//                 sh 'curl -uadmin:AP8gcgmmset5jeYChTJYDN6XmDd -T \
-//                  .tgz \
-//                  "http://ec2-3-87-36-92.compute-1.amazonaws.com:8081/artifactory/utc-nodejs/utc-app-${BUILD_ID}.tgz" '
-//             }
-//         }
-//     }
-// }
-
-
-pipeline {
+pipeline{
     agent any
 
-    stages {
-        stage('Dependency install') {
-            agent { docker { 
-                image 'node:14' 
-                args '-u root:root' } }
-            steps {
-                // Install dependencies
+    stages{
+        stage('Dependency install'){
+            agent { docker { image 'node:14'
+            args '-u root:root'}}
+            steps{
+                // sh 'npm cache clean  --force'
+                // sh ' sudo chown -R 995:993 "/.npm"'
                 sh 'npm install'
             }
         }
-
-        stage('Packaging') {
-            agent { docker { 
-                image 'node:14' 
-                args '-u root:root' } }
-            steps {
-                // Clean any existing .tgz files
-                sh 'rm -rf *.tgz || echo "No previous tgz file found"'
-
-                // Generate the npm package
+        stage('packaging'){
+            agent { docker { image 'node:14'
+            args '-u root:root'}}
+            steps{
+                sh 'rm -rf *.tgz || echo ""'
                 sh 'npm pack'
             }
         }
-
-        stage('Upload Artifact'){
+        stage('upload artifact'){
             steps{
-                // Upload the .tgz file
-                sh """
-                    tgzFile=\$(ls *.tgz)
-                    curl -u admin:AP8gcgmmset5jeYChTJYDN6XmDd -T \${tgzFile} \
-                    "http://ec2-3-87-36-92.compute-1.amazonaws.com:8081/artifactory/utc-nodejs/utc-app-\${BUILD_ID}.tgz"
-                """
+                sh 'curl -uadmin:AP8gcgmmset5jeYChTJYDN6XmDd -T \
+                 *.tgz \
+                 "http://ec2-3-87-36-92.compute-1.amazonaws.com:8081/artifactory/utc-nodejs/utc-app-${BUILD_ID}.tgz" '
             }
         }
     }
 }
+
+
