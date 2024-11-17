@@ -83,7 +83,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'artifactory-credentials', usernameVariable: 'ARTIFACTORY_USER', passwordVariable: 'ARTIFACTORY_PASS')]) {
                     sh """curl -u${ARTIFACTORY_USER}:${ARTIFACTORY_PASS} -T \
-                    utc-app-1.2.0.tgz \
+                    *.tgz \
                     "http://ec2-3-87-36-92.compute-1.amazonaws.com:8081/artifactory/utc-nodejs/utc-app-${BUILD_ID}.tgz" """
                 }
             }
